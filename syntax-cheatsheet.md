@@ -145,7 +145,7 @@ Summary
 
 `summary(data)`
 
-***Measures of location***
+**Measures of location**
 
 Mean
 
@@ -173,7 +173,7 @@ Extreme lower
 
 `min(data)`
 
-***Measures of spread***
+**Measures of spread**
 
 Range
 
@@ -196,7 +196,7 @@ Standard deviation
 Saving images of plots (in current directory)
 ```
 png("filename.png")
-x()  # where x() is an arbitrary function for producing a graphical representation
+x()  # where x() is an arbitrary function for producing graphical representations
 dev.off()
 ```
 
@@ -218,13 +218,13 @@ Add legend
 ```
 legend("position", title="", legend=sort(unique(data$groups)), fill=c(), box.lty=1, box.lwd=1, box.col="")
 # where position is defined as coordinates x, y, or right, left, etc.;
-# data$groups represents a discrete random variable that defines each group;
+# data$groups represents a discrete random variable that describes each group;
 # lty refers to type, lwd to width, and col colour.
 ```
 
 Frequency histogram
 
-`hist(data, xlim=c(), right=FALSE, breaks=c(), main="", xlab="", col="")`\
+`hist(data, xlim=c(), right=FALSE, breaks=c(), main="", xlab="", col="")`
 
 (Note that `right=FALSE` transforms bins from right-closed left-open (a, b] to left-closed right-open [a, b), e.g., will include 5 in bin 5-10 instead of 0-5.)
 
@@ -236,7 +236,7 @@ Boxplot
 
 `boxplot(vector, data_frame, horizontal=TRUE, main="",  col="")`
 
-(Note that `horizontal=TRUE` results in horizontal orientation.)
+(Note that `horizontal=TRUE` results in horizontal boxplot.)
 
 Comparative boxplot
 ```
