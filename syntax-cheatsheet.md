@@ -93,6 +93,10 @@ Rounding
 
 **3. GENERAL SYNTAX**
 
+Define variable
+
+`x <- vector()`
+
 Loops (for, while, repeat)
 ```
 for (i in seq(min, max)) {
