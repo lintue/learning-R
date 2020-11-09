@@ -68,6 +68,10 @@ Append to specific location
 
 `append(data, c(a, b, ...), i)  # where i is the position before append`
 
+Concatenate vectors to character strings
+
+`paste(x, y, ..., sep=" ", collapse=NULL)`
+
 Return n number of first or last values
 
 `head(data, n)` or `tail(data, n)`
@@ -150,6 +154,12 @@ Summary
 Mean
 
 `mean(data)`
+
+Weighted mean
+
+`weighted.mean(data, weights)  # where the two input variables are arbitrary vectors`
+
+(Note that if data contains NAs include argument na.rm=TRUE.)
 
 Median
 
