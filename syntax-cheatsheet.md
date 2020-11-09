@@ -8,7 +8,8 @@
 4. Numerical summaries
 5. Plotting
 6. Modelling data
-7. Useful functions
+7. Probability distributions
+8. Useful functions
 
 **1. DATA STRUCTURES**
 
@@ -22,7 +23,7 @@ Vector
 
 Matrix
 
-`matrix(data, nrow=y, ncol=x)`
+`matrix(data, nrow = y, ncol = x)`
 
 List
 
@@ -30,11 +31,11 @@ List
 
 Read clipboard data (MacOS)
 
-`read.table(pipe("pbpaste"), sep="\t", header=F)`
+`read.table(pipe("pbpaste"), sep = "\t", header = F)`
 
 Replace decimal commas with dots
 
-`scan(text=x, dec=",", sep=".")` or `as.numeric(sub(",", ".", sub(".", "", var, fixed=TRUE), fixed=TRUE))`
+`scan(text = x, dec = ",", sep = ".")` or `as.numeric(sub(",", ".", sub(".", "", var, fixed = TRUE), fixed = TRUE))`
 
 Display structure
 
@@ -70,7 +71,7 @@ Append to specific location
 
 Concatenate vectors to character strings
 
-`paste(x, y, ..., sep=" ", collapse=NULL)`
+`paste(x, y, ..., sep = " ", collapse = NULL)`
 
 Return n number of first or last values
 
@@ -99,9 +100,9 @@ Rounding
 
 Define variable
 
-`x <- vector()`
+`x <- vector()  # or x <- a; y <- b; z <- c for a series of expressions`
 
-Loops (for, while, repeat)
+Loops
 ```
 for (i in seq(min, max)) {
   do something
@@ -123,9 +124,9 @@ repeat {
 
 Conditionals
 ```
-if (something) {
+if (condition) {
   do a
-} else if (something) {
+} else if (condition) {
   do b
 } else {
   do c
@@ -134,14 +135,28 @@ if (something) {
 
 Functions
 ```
-function(input) {
+function(arguments) {
   return(something)
 }
 ```
 
+(Note that curly brackets are not needed for single-expression functions.)
+
+*Manipulate function body*
+
+`body(f) <- as.call(c(as.name("{"), e))  # where f is an arbitrary function`
+
+*Manipulate function arguments*
+
+`formals(f) <- alist(a = , b = , ...)  # where f is an arbitrary function; a and b new arguments`
+
 Operators
 
 [Listed here](https://www.tutorialspoint.com/r/r_operators.htm)
+
+Errors
+
+*to do: message warning, stop*
 
 **4. NUMERICAL SUMMARIES**
 
@@ -159,7 +174,7 @@ Weighted mean
 
 `weighted.mean(data, weights)  # where the two input variables are arbitrary vectors`
 
-(Note that if data contains NAs include argument na.rm=TRUE.)
+(Note that if data contains NAs include argument `na.rm = TRUE`.)
 
 Median
 
@@ -212,21 +227,21 @@ dev.off()
 
 Stemplot
 
-`stem(data, scale=1)`
+`stem(data, scale = 1)`
 
 Simple bar chart
 
-`barplot(data, xlab="", ylab="", main="", names.arg=c(), col="")`
+`barplot(data, xlab = "", ylab = "", main = "", names.arg = c(), col = "")`
 
 Side-by-side bar chart
 
-... add argument `beside=TRUE`;\
-modify width of bars with `width=0-1`;\
+... add argument `beside = TRUE`;\
+modify width of bars with `width = 0-1`;\
 and input data may be a table or individual vectors.
 
 Add legend
 ```
-legend("position", title="", legend=sort(unique(data$groups)), fill=c(), box.lty=1, box.lwd=1, box.col="")
+legend("position", title = "", legend = sort(unique(data$groups)), fill = c(), box.lty = 1, box.lwd = 1, box.col = "")
 # where position is defined as coordinates x, y, or right, left, etc.;
 # data$groups represents a discrete random variable that describes each group;
 # lty refers to type, lwd to width, and col colour.
@@ -234,32 +249,32 @@ legend("position", title="", legend=sort(unique(data$groups)), fill=c(), box.lty
 
 Frequency histogram
 
-`hist(data, xlim=c(), right=FALSE, breaks=c(), main="", xlab="", col="")`
+`hist(data, xlim = c(), right = FALSE, breaks = c(), main = "", xlab = "", col = "")`
 
-(Note that `right=FALSE` transforms bins from right-closed left-open (a, b] to left-closed right-open [a, b), e.g., will include 5 in bin 5-10 instead of 0-5.)
+(Note that `right = FALSE` transforms bins from right-closed left-open (a, b] to left-closed right-open [a, b), e.g., will include 5 in bin 5-10 instead of 0-5.)
 
 Unit-area histogram
 
-... add argument `freq=FALSE`
+... add argument `freq = FALSE`
 
 Boxplot
 
-`boxplot(vector, data_frame, horizontal=TRUE, main="",  col="")`
+`boxplot(vector, data_frame, horizontal = TRUE, main = "",  col = "")`
 
-(Note that `horizontal=TRUE` results in horizontal boxplot.)
+(Note that `horizontal = TRUE` results in horizontal boxplot.)
 
 Comparative boxplot
 ```
 boxplot(values ~ groups, data,
-  xlab="",
-  ylab="",
-  ylim=c(),
-  main="",
-  names=c(),
-  horizontal=TRUE,
-  notch=FALSE,  # confidence interval around median
-  varwidth=TRUE,  # box width (/height in horizontal) proportionate to sample size
-  col=c()
+  xlab = "",
+  ylab = "",
+  ylim = c(),
+  main = "",
+  names = c(),
+  horizontal = TRUE,
+  notch = FALSE,  # confidence interval around median
+  varwidth = TRUE,  # box width (/height in horizontal) proportionate to sample size
+  col = c()
 )
 ```
 
@@ -269,7 +284,7 @@ plot(x, y,
   xlab = "",
   ylab = "",
   xlim = c(),
-  ylim = c(),		 
+  ylim = c(),
   main = ""
 )
 ```
@@ -285,14 +300,31 @@ plot(dependent variable ~ independent variable, data = data.frame)
 abline(model)
 ```
 
-**7. USEFUL FUNCTIONS**
+**7. PROBABILITY DISTRIBUTIONS**
+
+*to do*
+
+d - for density - density/mass function\
+p - for probability - cumulative distribution function\
+q - for quantile - inverse c.d.f.\
+r - for random - sampling function
+
+Distributions:
+
+Binomial - binom\
+Geometric - geom\
+Poisson - pois\
+Uniform - unif\
+Normal - norm
+
+**8. USEFUL FUNCTIONS**
 
 Split dataset based on binary categories (return list of two variables)
 ```
 data <- data.frame(x, y)  # where x is a vector of group IDs and y is a vector of values
 
 splitter <- function(id, value) {
-  list <- list(a=vector(), b=vector())
+  list <- list(a = vector(), b = vector())
   for (i in seq(1, length(id))) {
     if (id[i] == 0) {
       list$a <- append(list$a, value[i])
@@ -341,4 +373,49 @@ looper <- function(value, items) {
 }
 
 looper(value, items)
+```
+
+Integration
+
+*Integrate over arbitrary interval*
+```
+f <- function(x) (expression)
+
+I <- function(min, max) {  # range [min, max]
+  integrate(f, lower = min, upper = max)  # where lower and upper are the limits of integration
+}
+
+I(min, max)
+```
+
+*Probabilities of continuous random variable X by integration*
+```
+g <- function(x) (expression)  # integrand: arbirary expression
+                               # e.g. (1 / sqrt(2 * pi)) * exp(-(1 / 2) * x^2)
+
+P <- function(g, g_L, g_U, lim_min, lim_max) {
+  if (g(g_L) < 0 || g(g_U) < 0) {  # ensure non-negativity given domain [g_L, g_U]
+    stop("The image set of g contains negative values... not a valid pdf.")
+  } else {
+    K <- integrate(g, lower = g_L, upper = g_U)  # integrate g over domain
+    norm <- 1 / K$value  # normalising constant
+  }
+  plot.function(g, xlim = c(g_L, g_U), ylim = c(0, 1), xlab = "x", ylab = "f(x)")
+  vert_x <- c(lim_min, seq(lim_min, lim_max, 0.01), lim_max)
+  vert_y <- c(0, g(seq(lim_min, lim_max, 0.01)), 0)
+  polygon(vert_x, vert_y, col = 'lavender')
+  I <- integrate(g, lower = lim_min, upper = lim_max)  # integrate g over range [lim_min, lim_max]
+  f <- eval(substitute(a * b, list(a = norm, b = I$value)))  # apply normalising constant to integral
+  if (lim_max < g_L || lim_min > g_U) f <- 0
+  else if (lim_min < g_L) lim_min <- g_L
+  else if (lim_max > g_U) lim_max <- g_U
+  title(main = paste(c("P(", lim_min, " < X < ", lim_max, ")", " = ", round(f, 3)), collapse=""))
+}
+
+# function P returns a plot of g and calculates P(lim_min < X < lim_max) where
+# g is the integrand/pdf (a normalising constant will be applied if needed);
+# g_L and g_U define the domain of g; and
+# lim_min and lim_max are the limits of integration (for probabilities)
+
+P(g, g_L, g_U, lim_min, lim_max)
 ```
