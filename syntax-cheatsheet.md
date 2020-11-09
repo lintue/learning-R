@@ -393,29 +393,40 @@ I(min, max)
 g <- function(x) (expression)  # integrand: arbirary expression
                                # e.g. (1 / sqrt(2 * pi)) * exp(-(1 / 2) * x^2)
 
-P <- function(g, g_L, g_U, lim_min, lim_max) {
+P <- function(g, g_L, g_U, lim_min, lim_max, scale_y = FALSE) {
   if (g(g_L) < 0 || g(g_U) < 0) {  # ensure non-negativity given domain [g_L, g_U]
     stop("The image set of g contains negative values... not a valid pdf.")
   } else {
     K <- integrate(g, lower = g_L, upper = g_U)  # integrate g over domain
     norm <- 1 / K$value  # normalising constant
   }
-  plot.function(g, xlim = c(g_L, g_U), ylim = c(0, 1), xlab = "x", ylab = "f(x)")
-  vert_x <- c(lim_min, seq(lim_min, lim_max, 0.01), lim_max)
-  vert_y <- c(0, g(seq(lim_min, lim_max, 0.01)), 0)
-  polygon(vert_x, vert_y, col = 'lavender')
+  if (lim_min <= g_L) lim_min <- g_L  ######
+  else if (lim_max >= g_U) lim_max <- g_U  # following (g_L ≤ X ≤ g_U)
   I <- integrate(g, lower = lim_min, upper = lim_max)  # integrate g over range [lim_min, lim_max]
-  f <- eval(substitute(a * b, list(a = norm, b = I$value)))  # apply normalising constant to integral
-  if (lim_max < g_L || lim_min > g_U) f <- 0
-  else if (lim_min < g_L) lim_min <- g_L
-  else if (lim_max > g_U) lim_max <- g_U
-  title(main = paste(c("P(", lim_min, " < X < ", lim_max, ")", " = ", round(f, 3)), collapse=""))
+  f <- eval(substitute(a * b, list(a = norm, b = I$value)))  # apply normalising constant to get p.d.f.
+  if (lim_max <= g_L || lim_min > g_U) f <- 0  # (P = 0) if out of range
+  scaled <- function(x) norm * g(x)  # scale g for plotting
+  peak <- max(scaled(seq(g_L, g_U, 0.01)))  # find peak for scaling y-axis
+  if (scale_y == FALSE) scale_y <- c(0, 1) else scale_y <- c(0, peak)
+  plot.function(scaled, xlim = c(g_L, g_U), ylim = scale_y, xlab = "x", ylab = "f(x)")
+  if (f > 0) {
+    vert_x <- c(lim_min, seq(lim_min, lim_max, 0.01), lim_max)
+    vert_y <- c(0, scaled(seq(lim_min, lim_max, 0.01)), 0)
+    polygon(vert_x, vert_y, col = 'lavender')
+  }
+  title(main = paste(c
+    (
+      "The PDF of X; ",
+      "P(", lim_min, " ≤ X ≤ ", lim_max, ")", " = ", round(f, 3)
+    ), collapse=""))
 }
 
-# function P returns a plot of g and calculates P(lim_min < X < lim_max) where
-# g is the integrand/pdf (a normalising constant will be applied if needed);
+# Function P plots the p.d.f. of X and calculates P(lim_min ≤ X ≤ lim_max) where
+# g is the integrand (a normalising constant will be applied if needed);
 # g_L and g_U define the domain of g; and
-# lim_min and lim_max are the limits of integration (for probabilities)
+# lim_min and lim_max are the limits of integration (for probabilities).
 
 P(g, g_L, g_U, lim_min, lim_max)
 ```
+
+(Note that you may scale the y-axis by including `scale_y = TRUE`; defaults to `FALSE`.)
