@@ -33,6 +33,10 @@ Read clipboard data (MacOS)
 
 `read.table(pipe("pbpaste"), sep = "\t", header = F)`
 
+Read line from terminal
+
+`readline(prompt = "Enter something: ")`
+
 Replace decimal commas with dots
 
 `scan(text = x, dec = ",", sep = ".")` or `as.numeric(sub(",", ".", sub(".", "", var, fixed = TRUE), fixed = TRUE))`
@@ -319,28 +323,27 @@ Normal - norm
 
 **8. USEFUL FUNCTIONS**
 
-Split dataset based on binary categories (return list of two variables)
+Split dataset into categorised list
 ```
-data <- data.frame(x, y)  # where x is a vector of group IDs and y is a vector of values
+data <- data.frame(X, Y)  # where X represents arbitrary categorical variables
+                          # and Y their corresponding values
 
 splitter <- function(id, value) {
-  list <- list(a = vector(), b = vector())
+  list <- list()
+  for (i in unique(id)) list[[i]] <- vector()
   for (i in seq(1, length(id))) {
-    if (id[i] == 0) {
-      list$a <- append(list$a, value[i])
-    } else {
-      list$b <- append(list$b, value[i])
-    }
+    category <- id[i]
+    list[[category]] <- append(list[[category]], value[i])
   }
-  return(list)
+  return(list)  # returns a list of variables
 }
 
-splitter(data$x, data$y)
+splitter(data$X, data$Y)
 ```
 
-Loop through numerical values
+Loop through numerical data
 
-*Within a given range (return vector of values which meet condition)*
+*Within given range (return vector of conditional values)*
 ```
 looper <- function(min, max) {
   x <- vector()
@@ -355,7 +358,7 @@ looper <- function(min, max) {
 looper(min, max)
 ```
 
-*Return a specific number of items (input initial value and number of items to be returned)*
+*Return a specified number of items (input initial value and number of items to be returned)*
 ```
 looper <- function(value, items) {
   x <- vector()
