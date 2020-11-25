@@ -394,7 +394,7 @@ I(min, max)
 *Probabilities of continuous random variable X by integration*
 ```
 g <- function(x) (expression)  # integrand: arbirary expression
-                               # e.g. (1 / sqrt(2 * pi)) * exp(-(1 / 2) * x^2)
+                               # e.g. (1 / sqrt(2 * pi) * exp(-(1 / 2) * x^2))
 
 P <- function(g, g_L, g_U, lim_min, lim_max, scale_y = FALSE) {
   if (g(g_L) < 0 || g(g_U) < 0) {  # ensure non-negativity given domain [g_L, g_U]
