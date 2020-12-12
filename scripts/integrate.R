@@ -47,8 +47,8 @@ P <- function(g, g_L, g_U, lim_min, lim_max) {
     lim_max <- as.numeric(readline(prompt = "Integral endpoint [upper]: "))
   }
   scale_y <- as.logical(toupper(readline(prompt = "Scale y-axis? [t/f]: ")))
-  if (g(g_L) < 0 || g(g_U) < 0) {  # ensure non-negativity given domain [g_L, g_U]
-    error <- "The image set of g contains negative values... not a valid p.d.f."
+  if (min(g(seq(g_L, g_U, 0.01))) < 0) {  # ensure non-negativity given domain [g_L, g_U]
+    error <- "The image set of g contains negative values: not a valid p.d.f."
     plot.function(g, xlim = c(g_L, g_U), ylim = c(0, max(g(seq(g_L, g_U, 0.01)))), xlab = "x", ylab = "g(x)")
     title(error)
     stop(error)
@@ -72,7 +72,7 @@ P <- function(g, g_L, g_U, lim_min, lim_max) {
   }
   title(main = paste(c
     (
-      "The PDF of X; ",
+      "The PDF of X -- ",
       "P(", lim_min, " ≤ X ≤ ", lim_max, ")", " = ", round(f, 3)
     ), collapse=""))
 }
