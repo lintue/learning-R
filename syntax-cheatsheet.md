@@ -4,12 +4,13 @@
 
 1. Data structures
 2. Numbers
-3. General syntax
-4. Numerical summaries
-5. Plotting
-6. Modelling data
-7. Probability distributions
-8. Useful functions
+3. Strings
+4. General
+5. Numerical summaries
+6. Plotting
+7. Modelling data
+8. Probability distributions
+9. Useful functions
 
 **1. DATA STRUCTURES**
 
@@ -29,18 +30,6 @@ List
 
 `list(a, b, ...)`
 
-Read clipboard data (MacOS)
-
-`read.table(pipe("pbpaste"), sep = "\t", header = F)`
-
-Read line from terminal
-
-`readline(prompt = "Enter something: ")`
-
-Replace decimal commas with dots
-
-`scan(text = x, dec = ",", sep = ".")` or `as.numeric(sub(",", ".", sub(".", "", var, fixed = TRUE), fixed = TRUE))`
-
 Display structure
 
 `str(data)`
@@ -48,10 +37,6 @@ Display structure
 ... or length
 
 `length(data)`
-
-Transpose
-
-`t(data)`
 
 Convert data structure
 
@@ -73,14 +58,6 @@ Append to specific location
 
 `append(data, c(a, b, ...), i)  # where i is the position before append`
 
-Concatenate vectors to character strings
-
-`paste(x, y, ..., sep = " ", collapse = NULL)`
-
-Return n number of first or last values
-
-`head(data, n)` or `tail(data, n)`
-
 Note on indexing
 
 Starts from 1 as opposed to 0;\
@@ -100,7 +77,33 @@ Rounding
 
 `round(value, dp)`
 
-**3. GENERAL SYNTAX**
+Transpose
+
+`t(data)`
+
+Cumulative sum
+
+`cumsum(data)`
+
+**3. STRINGS**
+
+Concatenate vectors to character strings
+
+`paste(x, y, ..., sep = " ", collapse = NULL)`
+
+Convert characters from lower to uppercase and vice versa
+```
+toupper(data)
+tolower(data)
+casefold(x, upper = TRUE/FALSE)  # alternative method
+chartr(old = "example", new = "eXaMpLe", data)  # specify new character pattern
+```
+
+Convert string to expression
+
+`parse(text = data)`
+
+**4. GENERAL**
 
 Define variable
 
@@ -162,7 +165,53 @@ Errors
 
 *to do: message warning, stop*
 
-**4. NUMERICAL SUMMARIES**
+Return n number of first or last values
+
+`head(data, n)` or `tail(data, n)`
+
+Look for object
+
+`exists("variable")`
+
+Check for duplicates in data
+```
+duplicated(data)
+
+# Returns a vector of Boolean values.
+# If input is a vector, compares consecutive values;
+# and if input is a matrix, compares consecutive row vectors.
+```
+
+Remove duplicates
+
+```unique(data)```
+
+Read clipboard data (MacOS)
+
+`read.table(pipe("pbpaste"), sep = "\t", header = F)`
+
+Read line from terminal
+
+`readline(prompt = "Enter something: ")  # disable quoting in strings by including quote = ""`
+
+Substitute values (e.g., decimal commas to dots)
+
+`scan(text = x, dec = ",", sep = ".")` or `as.numeric(sub(",", ".", sub(".", "", var, fixed = TRUE), fixed = TRUE))`
+
+Check if argument value was specified to a function
+```
+missing(data)
+
+e.g.,
+
+a <- function(x, y) {
+  if (missing(y)) {
+    do something
+  }
+}
+```
+
+**5. NUMERICAL SUMMARIES**
 
 Summary
 
@@ -220,7 +269,7 @@ Standard deviation
 
 `sqrt(var(data))`
 
-**5. PLOTTING**
+**6. PLOTTING**
 
 Saving images of plots (in current directory)
 ```
@@ -293,7 +342,7 @@ plot(x, y,
 )
 ```
 
-**6. MODELLING DATA**
+**7. MODELLING DATA**
 
 Linear regression
 ```
@@ -304,7 +353,13 @@ plot(dependent variable ~ independent variable, data = data.frame)
 abline(model)
 ```
 
-**7. PROBABILITY DISTRIBUTIONS**
+Normal probability plot
+```
+qqnorm(data)
+qqline(data)
+```
+
+**8. PROBABILITY DISTRIBUTIONS**
 
 *to do*
 
@@ -321,7 +376,7 @@ Poisson - pois\
 Uniform - unif\
 Normal - norm
 
-**8. USEFUL FUNCTIONS**
+**9. USEFUL FUNCTIONS**
 
 Split dataset into categorised list
 ```
@@ -376,6 +431,27 @@ looper <- function(value, items) {
 }
 
 looper(value, items)
+```
+
+Find factorial of non-negative integer
+```
+factorial <- function(n) {
+  n <- as.integer(n)
+  if (n < 0) {
+    print("The factorial of a negative integer is undefined")
+  } else if (n == 0) {
+    print("The factorial of 0 is 1")
+  } else {
+    factorial <- 1
+    for (i in seq(1, n)) {
+      factorial <- factorial * i
+    }
+    print(paste("The factorial of", n, "is", factorial))
+  }
+}
+
+# Use: factorial(n)
+# Output: "The factorial of n is x."
 ```
 
 Integration
