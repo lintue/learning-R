@@ -1,6 +1,6 @@
 ### R syntax cheatsheet
 
-*Disclaimer: the list is expanded as I discover new things; and as with programming in general, there are many ways of achieving something. This is just a general outline of useful stuff.*
+*Disclaimer: this is just a general outline of things I've found useful.*
 
 1. Data structures
 2. Numbers
@@ -378,6 +378,8 @@ Normal - norm
 
 **9. USEFUL FUNCTIONS**
 
+*There are some useful functions in scripts/*
+
 Split dataset into categorised list
 ```
 data <- data.frame(X, Y)  # where X represents arbitrary categorical variables
@@ -453,59 +455,3 @@ factorial <- function(n) {
 # Use: factorial(n)
 # Output: "The factorial of n is x."
 ```
-
-Integration
-
-*Integrate over arbitrary interval*
-```
-f <- function(x) (expression)
-
-I <- function(min, max) {  # range [min, max]
-  integrate(f, lower = min, upper = max)  # where lower and upper are the limits of integration
-}
-
-I(min, max)
-```
-
-*Probabilities of continuous random variable X by integration*
-```
-g <- function(x) (expression)  # integrand: arbirary expression
-                               # e.g. (1 / sqrt(2 * pi) * exp(-(1 / 2) * x^2))
-
-P <- function(g, g_L, g_U, lim_min, lim_max, scale_y = FALSE) {
-  if (g(g_L) < 0 || g(g_U) < 0) {  # ensure non-negativity given domain [g_L, g_U]
-    stop("The image set of g contains negative values... not a valid pdf.")
-  } else {
-    K <- integrate(g, lower = g_L, upper = g_U)  # integrate g over domain
-    norm <- 1 / K$value  # normalising constant
-  }
-  if (lim_min <= g_L) lim_min <- g_L  ######
-  else if (lim_max >= g_U) lim_max <- g_U  # following (g_L ≤ X ≤ g_U)
-  I <- integrate(g, lower = lim_min, upper = lim_max)  # integrate g over range [lim_min, lim_max]
-  f <- eval(substitute(a * b, list(a = norm, b = I$value)))  # apply normalising constant to get p.d.f.
-  if (lim_max <= g_L || lim_min > g_U) f <- 0  # (P = 0) if out of range
-  scaled <- function(x) norm * g(x)  # scale g for plotting
-  peak <- max(scaled(seq(g_L, g_U, 0.01)))  # find peak for scaling y-axis
-  if (scale_y == FALSE) scale_y <- c(0, 1) else scale_y <- c(0, peak)
-  plot.function(scaled, xlim = c(g_L, g_U), ylim = scale_y, xlab = "x", ylab = "f(x)")
-  if (f > 0) {
-    vert_x <- c(lim_min, seq(lim_min, lim_max, 0.01), lim_max)
-    vert_y <- c(0, scaled(seq(lim_min, lim_max, 0.01)), 0)
-    polygon(vert_x, vert_y, col = 'lavender')
-  }
-  title(main = paste(c
-    (
-      "The PDF of X; ",
-      "P(", lim_min, " ≤ X ≤ ", lim_max, ")", " = ", round(f, 3)
-    ), collapse=""))
-}
-
-# Function P plots the p.d.f. of X and calculates P(lim_min ≤ X ≤ lim_max) where
-# g is the integrand (a normalising constant will be applied if needed);
-# g_L and g_U define the domain of g; and
-# lim_min and lim_max are the limits of integration (for probabilities).
-
-P(g, g_L, g_U, lim_min, lim_max)
-```
-
-(Note that you may scale the y-axis by including `scale_y = TRUE`; defaults to `FALSE`.)
