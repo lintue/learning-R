@@ -1,4 +1,4 @@
-# Two useful functions involving integration
+# Some functions involving integration
 
 # import: source("integrate.R")
 
@@ -56,13 +56,13 @@ P <- function(g, g_L, g_U, lim_min, lim_max) {
     K <- integrate(g, lower = g_L, upper = g_U)  # integrate g over domain
     norm <- 1 / K$value  # normalising constant
   }
-  # Store original endpoints for graph label.
+  # Store original endpoints for graph label
   lim_min_o <- lim_min
   lim_max_o <- lim_max
-  # Restrict endpoints.
+  # Restrict endpoints
   if (lim_min <= g_L) lim_min <- g_L  ######
   else if (lim_max >= g_U) lim_max <- g_U  # following (g_L ≤ X ≤ g_U)
-  # Integrate g over range [lim_min, lim_max].
+  # Integrate g over range [lim_min, lim_max]
   I <- integrate(g, lower = lim_min, upper = lim_max)
   f <- eval(substitute(a * b, list(a = norm, b = I$value)))  # apply normalising constant to get p.d.f.
   if (lim_max <= g_L || lim_min > g_U) f <- 0  # (P = 0) if out of range
@@ -98,38 +98,38 @@ P <- function(g, g_L, g_U, lim_min, lim_max) {
 # and lim_min and lim_max as described above
 
 Z <- function(mean, variance, lim_min, lim_max) {
-  # If mean or SD not given, prompt user.
+  # If mean or SD not given, prompt user
   if (missing(mean) || missing(variance)) {
-    # TO DO: fractions as inputs.
+    # TO DO: fractions as inputs
     mean <- as.numeric(readline(prompt = "Mean of X: "))
     sd <- sqrt(as.numeric(readline(prompt = "Variance of X: ")))
   } else {
     sd <- sqrt(variance)
   }
-  # Standardise X.
+  # Standardise X
   z <- function(x) (1/sqrt(2*pi) * exp(-(1/2) * ((x-mean)/sd)^2))
-  # Calculate μ-4*sd and μ+4*sd for x-axis.
+  # Calculate μ-4*sd and μ+4*sd for x-axis
   z_L <- (mean - (4*sd))
   z_U <- (mean + (4*sd))
-  # Limits of integration.
+  # Limits of integration
   if (missing(lim_min) || missing(lim_max)) {
     lim_min <- as.numeric(readline(prompt = "Integral endpoint [lower]: "))
     lim_max <- as.numeric(readline(prompt = "Integral endpoint [upper]: "))
   }
-  # Store original endpoints for graph label.
+  # Store original endpoints for graph label
   lim_min_o <- lim_min
   lim_max_o <- lim_max
-  # Restrict endpoints.
+  # Restrict endpoints
   if (lim_min <= z_L) lim_min <- z_L  ######
-  else if (lim_max >= z_U) lim_max <- z_U  # following (g_L ≤ X ≤ g_U).
-  # Find normalising constant.
-  K <- integrate(z, lower = z_L, upper = z_U)  # integrate z over domain [z_L, z_U].
-  norm <- 1 / K$value  # normalising constant.
-  # Integrate z over [lim_min, lim_max].
+  else if (lim_max >= z_U) lim_max <- z_U  # following (g_L ≤ X ≤ g_U)
+  # Find normalising constant
+  K <- integrate(z, lower = z_L, upper = z_U)  # integrate z over domain [z_L, z_U]
+  norm <- 1 / K$value  # normalising constant
+  # Integrate z over [lim_min, lim_max]
   I <- integrate(z, lower = lim_min, upper = lim_max)
-  # Compute probability by applying normalising constant.
+  # Compute probability by applying normalising constant
   f <- eval(substitute(a * b, list(a = norm, b = I$value)))
-  if (lim_max <= z_L || lim_min > z_U) f <- 0  # (P = 0) if out of range.
+  if (lim_max <= z_L || lim_min > z_U) f <- 0  # (P = 0) if out of range
   # Plot.
   plot.function(z, xlim = c(z_L, z_U), ylim = c(0, 0.42), xlab = "z", ylab = "f(z)")
   if (f > 0) {
