@@ -131,7 +131,7 @@ Z <- function(mean, variance, lim_min, lim_max) {
   f <- eval(substitute(a * b, list(a = norm, b = I$value)))
   if (lim_max <= z_L || lim_min > z_U) f <- 0  # (P = 0) if out of range
   # Plot.
-  plot.function(z, xlim = c(z_L, z_U), ylim = c(0, 0.42), xlab = "z", ylab = "f(z)")
+  plot.function(z, xlim = c(z_L, z_U), ylim = c(0, 0.42), xlab = "x", ylab = "f(x)")
   if (f > 0) {
     vert_x <- c(lim_min, seq(lim_min, lim_max, 0.01), lim_max)
     vert_y <- c(0, z(seq(lim_min, lim_max, 0.01)), 0)
