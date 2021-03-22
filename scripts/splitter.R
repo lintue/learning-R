@@ -2,8 +2,9 @@
 
 # import: source("splitter.R")
 # use: splitter(data$X, data$Y)
-# assuming data <- data.frame(X, Y)
-# where X represents arbitrary categorical variables and Y their corresponding values
+
+# data <- data.frame(X, Y)
+# where X represents arbitrary categorical variables and Y corresponding values
 
 splitter <- function(id, value) {
   list <- list()
